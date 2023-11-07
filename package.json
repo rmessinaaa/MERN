@@ -1,0 +1,19 @@
+{
+  "name": "mern",
+  "version": "1.0.0",
+  "description": "Proyecto-backend-sinergia",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmessinaaa/MERN.git"
+  },
+  "author": "Sinergia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rmessinaaa/MERN/issues"
+  },
+  "homepage": "https://github.com/rmessinaaa/MERN#readme"
+}
