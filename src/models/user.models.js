@@ -16,6 +16,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    rol: {
+        type: String,
+        enum: ['donante', 'institución'],
+        required: true,
+        default: 'donante'
+    },
+}, {
+    timestamps: true
     
 
    
