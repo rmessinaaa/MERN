@@ -69,17 +69,38 @@ const logout = async (req, res) => {
     return res.sendStatus(200);
 }
 
-const profile = async () => {
-   const userFound = User.findById(req.user.id);
-   if (!userFound){
-    return res.status(400).json({message: "User not found"})};
+const profile = async (req, res) => {
+    try {
+        const userFound = await User.findById(req.params.id);
+
+        if (!userFound) {
+            return res.status(400).json({ message: "User not found" });
+        }
+
+        return res.json({
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
+            createdAt: userFound.createdAt,
+            updatedAt: userFound.updatedAt,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
+const updateProfile = async (req, res) => {
+    const actualizarProfile = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    if(!actualizarProfile) {
+        return res.status(404).json({message: "No se ha encontrado el perfil"})}
     return res.json({
-        id: userFound._id,
-        username: userFound.username,
-        email: userFound.email,
-        createdAt: userFound.createdAt,
-        updatedAt: userFound.updatedAt,
-    })
-   
-}
-module.exports = { register, login, logout, profile };
+            id: actualizarProfile._id,
+            username: actualizarProfile.username,
+            email: actualizarProfile.email,
+            createdAt: actualizarProfile.createdAt,
+            updatedAt: actualizarProfile.updatedAt,
+        });
+};
+module.exports = { register, login, logout, profile, updateProfile };
