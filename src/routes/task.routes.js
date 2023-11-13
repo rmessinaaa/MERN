@@ -1,13 +1,16 @@
 const {Router} = require('express');
 const {authRequired} = require('../middlewares/validate.Token');
-const {getCampanas, getCampana, createCampana, updateCampana, deleteCampana} = require('../controllers/task.controller');
+const {getCampanas, getAllCampanas, getCampana, createCampana, updateCampana, deleteCampana} = require('../controllers/task.controller');
+const {createTaskSchema} = require('../Schemas/task.schema');
+const {validateSchema} = require('../middlewares/validator.middleware.js')
 
 
 const router = Router();
 
 router.get('/campanas', authRequired, getCampanas);
+router.get('/allcampanas', authRequired, getAllCampanas);
 router.get("/campanas/:id", authRequired, getCampana);
-router.post("/campanas", authRequired, createCampana);
+router.post("/campanas", authRequired, validateSchema(createTaskSchema), createCampana);
 router.delete("/campanas/:id", authRequired, deleteCampana);
 router.put("/campanas/:id", authRequired, updateCampana);
 

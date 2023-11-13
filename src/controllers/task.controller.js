@@ -1,16 +1,25 @@
 const campana = require('../models/campanas.models');
 
-const getCampanas = async (req, res) => {
+const getAllCampanas = async (req, res) => {
     const obtenerCampanas = await campana.find();
+    res.json(obtenerCampanas);
+};
+
+const getCampanas = async (req, res) => {
+    const obtenerCampanas = await campana.find({
+        user: req.user.id
+    }).populate("user");
     res.json(obtenerCampanas);
 };
 
 const createCampana = async (req, res) => {
     const {title, description, date} = req.body;
+    console.log(req.user);
     const newCampana = new campana({
         title, 
         description, 
         date,
+        user: req.user.id
     });
     const savedCampana = await newCampana.save();
     res.json(savedCampana);
@@ -36,7 +45,8 @@ const deleteCampana = async (req, res) => {
     const borrarCampana = await campana.findByIdAndDelete(req.params.id);
     if(!borrarCampana) {
         return res.status(404).json({message: "No se ha encontrado la campana"})}
-    res.json(borrarCampana);
+    
+    res.sendStatus(204);
 
 }
-module.exports = {getCampanas, getCampana, createCampana, updateCampana, deleteCampana}
+module.exports = {getCampanas,getAllCampanas, getCampana, createCampana, updateCampana, deleteCampana}
