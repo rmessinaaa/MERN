@@ -10,7 +10,7 @@ const createAccessToken = require("../services/generar-jwt");
 const register = async (req, res) => {
     const { username, email, password, rol } = req.body;
     try {
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = bcrypt.hashSync(password, 10);
         const newUser = new User({
             username,
             email,
@@ -41,8 +41,9 @@ const login = async (req, res) => {
     try {
         const userFound = await User.findOne({email});
         if (!userFound) return res.status(400).json({ message: 'user not found'})
-        const isMatch = await bcrypt.compare(password, userFound.password);
-        if (!isMatch) return res.status(400).json({message: "Incorrect password"});
+        const isMatch = await bcrypt.compareSync(password, userFound.password);
+        console.log(isMatch);
+        if (!isMatch) return res.status(400).json({message: "clave incorrecta"});
         
 
         
@@ -53,7 +54,7 @@ const login = async (req, res) => {
         res.json({
             id: userFound._id,
             username: userFound.username,
-            username: userFound.username,
+            password: userFound.password,
             email: userFound.email,
             createdAt: userFound.createdAt, 
             updatedAt: userFound.updatedAt,
@@ -92,13 +93,21 @@ const profile = async (req, res) => {
 
 
 const updateProfile = async (req, res) => {
-    const actualizarProfile = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    const {username, email, password} = req.body
+    const passwordHash = bcrypt.hashSync(password, 10);
+    const usuarioUpdate = {
+        username,
+        email,
+        passwordHash
+    }
+    const actualizarProfile = await User.findByIdAndUpdate(req.params.id, usuarioUpdate, {new: true});
     if(!actualizarProfile) {
         return res.status(404).json({message: "No se ha encontrado el perfil"})}
     return res.json({
             id: actualizarProfile._id,
             username: actualizarProfile.username,
             email: actualizarProfile.email,
+            password: actualizarProfile.password,
             createdAt: actualizarProfile.createdAt,
             updatedAt: actualizarProfile.updatedAt,
         });
