@@ -41,12 +41,17 @@ const login = async (req, res) => {
     try {
         const userFound = await User.findOne({email});
         if (!userFound) return res.status(400).json({ message: 'user not found'})
+        console.log("mail verificado");
         const isMatch = await bcrypt.compare(password, userFound.password);
         if (!isMatch) return res.status(400).json({message: "Incorrect password"});
+        console.log("contraseña verificada");
         
 
         
-        const token = await createAccessToken({id: userFound._id})
+        const token = await createAccessToken({id: userFound._id, username: userFound.username, email: userFound.email, rol: userFound.rol}) // encriptacion de los datos del usuario en token para usarlos en el front.
+
+        console.log('Token generado:', token);
+
 
         res.cookie('token', token); 
 
@@ -55,6 +60,7 @@ const login = async (req, res) => {
             username: userFound.username,
             username: userFound.username,
             email: userFound.email,
+            rol: userFound.rol,
             createdAt: userFound.createdAt, 
             updatedAt: userFound.updatedAt,
         });

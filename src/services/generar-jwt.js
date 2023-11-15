@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken'); 
 require('dotenv').config();
 
-function createAccessToken(payload) {
+const createAccessToken = (id = "", username ="", email ="", rol="") => {
   return new Promise((resolve, reject) => {
+    const payload = { id, username, email, rol } //inclusion de atributos del usuario para codificarlos en el token
+
     jwt.sign(
       payload,
       process.env.TOKENSECRET,
@@ -11,7 +13,8 @@ function createAccessToken(payload) {
       },
       (err, token) => {
         if (err) {
-          console.error(err); 
+          console.log(err);
+          reject("No se pudo generar el token"); 
         } else {
           resolve(token);
         }
