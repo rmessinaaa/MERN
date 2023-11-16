@@ -3,7 +3,14 @@ const mongoose = require('mongoose');
 const schemaDonation = new mongoose.Schema({
     donation: {
         type: Number,
-        required: true
+        required: true,
+        trim: true
+    },
+    unidadPago: {
+        type: String,
+        required: true,
+        trim: true,
+        default: "clp"
     },
     date: {
         type: Date,
@@ -14,6 +21,7 @@ const schemaDonation = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    
 },
     {
         timestamps: true
@@ -21,4 +29,4 @@ const schemaDonation = new mongoose.Schema({
 )
 
 
-module.exports = mongoose.model('donation', schemaDonation);
+module.exports = mongoose.model('Donation', schemaDonation);
