@@ -11,6 +11,46 @@ const schemaCampana = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+   },
+    meta: {
+        type: Number,
+        required: true,
+        trim: true
+    },
+    calculation: {
+        type: Number,
+        required: false,
+        trim: true,
+        default: 0
+    },
+    account: {
+        banco : {
+            type: String,
+            required: true,
+            trim: true,
+            enum: ["Banco Estado", ]
+            },
+        accountNum: {
+            type: Number,
+            required: true,
+            trim: true
+            },
+        accountType: {
+            type: String,
+            required: true,
+            trim: true
+            },
+        email: {
+            type: String,
+            required: true,
+            trim: true
+            }
+        },
+    category: {
+        type: String,
+        required: true,
+        trim: true,
+        enum: ["Vivienda", "Salud", "Educación", "Infancia", "Rural"]
     },
     date: {
         type: Date,
