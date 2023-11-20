@@ -28,29 +28,35 @@ const schemaCampana = new mongoose.Schema({
             type: String,
             required: true,
             trim: true,
-            enum: ["Banco Estado", ]
+            enum: ["Banco Estado", ],
+            default: "Banco Estado"
             },
         accountNum: {
             type: Number,
             required: true,
-            trim: true
+            trim: true,
+            default: 10
             },
         accountType: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            enum: ["Cuenta Corriente", "Cuenta Vista", "Cuenta Rut"],
+            default: "Cuenta Rut"
             },
         email: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            default: "campana@campana.com"
             }
         },
     category: {
         type: String,
         required: true,
         trim: true,
-        enum: ["Vivienda", "Salud", "Educación", "Infancia", "Rural"]
+        enum: ["Vivienda", "Salud", "Educación", "Infancia", "Rural"],
+        default: "Vivienda"
     },
     date: {
         type: Date,

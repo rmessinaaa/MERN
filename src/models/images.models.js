@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const schemaImage = new mongoose.Schema({
-    image: {
+    filename: {
         type: String,
         required: true,
         trim: true
@@ -12,7 +12,24 @@ const schemaImage = new mongoose.Schema({
         required: true
     },
     description: {
-        
+        type: String,
+        default: "Imagen"
+    },
+    path: {
+        type: String
+    },
+    originalname: {
+        type: String,
+        },
+    mimetype: {
+        type: String
+        },
+    size: {
+        type: Number
+         },
+    created_at: {
+        type: Date,
+        default: Date.now()
     }
 })
 

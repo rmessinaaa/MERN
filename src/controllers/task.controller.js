@@ -13,18 +13,30 @@ const getCampanas = async (req, res) => {
 };
 
 const createCampana = async (req, res) => {
-    const {title, description, date} = req.body;
+    const { title, description, date, meta, calculation, account, category } = req.body;
     console.log(req.user);
-    const newCampana = new campana({
-        title, 
-        description, 
+
+    try {const newCampana = new campana({
+        title,
+        description,
+        meta,
+        calculation,
+        account,
+        category,
         date,
         user: req.user.id
     });
+
     const savedCampana = await newCampana.save();
-    res.json(savedCampana);
-    
+
+    const populatedCampana = await campana.findById(savedCampana._id).populate('user');
+
+    res.json(populatedCampana);}
+    catch (error){
+        console.log(error)
+    }
 };
+
 
 const getCampana = async (req, res) => {
     const obtenerCampana = await campana.findById(req.params.id);
