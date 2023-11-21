@@ -6,11 +6,14 @@ const getAllCampanas = async (req, res) => {
 };
 
 const getCampanas = async (req, res) => {
-    const obtenerCampanas = await campana.find({
-        user: req.user.id
-    }).populate("user");
-    res.json(obtenerCampanas);
-};
+    const userId = req.user.id;
+    console.log(userId);
+    campana.find({ user: userId })
+      .populate("user") // Si es necesario
+      .then((campañas) => res.json(campañas))
+      .catch((error) => res.status(500).json({ error: 'Error al obtener las campañas' }));
+  };
+  
 
 const createCampana = async (req, res) => {
     const { title, description, date, meta, calculation, account, category } = req.body;
