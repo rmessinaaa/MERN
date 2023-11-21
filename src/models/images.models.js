@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const schemaImage = new mongoose.Schema({
     filename: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     campana: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'campana',
-        required: true
+        required: false
     },
     description: {
         type: String,

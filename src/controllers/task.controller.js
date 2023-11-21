@@ -1,4 +1,5 @@
 const campana = require('../models/campanas.models');
+const mongoose = require('mongoose')
 
 const getAllCampanas = async (req, res) => {
     const obtenerCampanas = await campana.find();
@@ -16,7 +17,7 @@ const getCampanas = async (req, res) => {
   
 
 const createCampana = async (req, res) => {
-    const { title, description, date, meta, calculation, account, category } = req.body;
+    const { title, description, date, meta, calculation, account, category, location } = req.body;
     console.log(req.user);
 
     try {const newCampana = new campana({
@@ -26,6 +27,7 @@ const createCampana = async (req, res) => {
         calculation,
         account,
         category,
+        location,
         date,
         user: req.user.id
     });
