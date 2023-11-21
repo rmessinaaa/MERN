@@ -1,21 +1,33 @@
 const mongoose = require('mongoose');
 const Image = require('../models/images.models');
-const multer = require('multer');
+const fileUpload = require('express-fileupload');
 
 const uploadImage = async (req, res) => {
     try {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            res.status(400).send('Debes subir un archivo');
+            return;
+        }
+
+        console.log('req.files >>>', req.files);
+
+        const sampleFile = req.files;
+        console.log(sampleFile) 
+        const { description, campana} = req.body;
+
         const image = new Image({
-            campana: req.body.campana,
-            description: req.body.description,
-            filename: req.file.filename,
-            path: '/img/uploads/' + req.file.filename,
-            originalname: req.file.originalname,
-            mimetype: req.file.mimetype,
-            size: req.file.size
+            description,
+            filename: sampleFile.name,
+            path: '/img/uploads/' + sampleFile.name,
+            originalname: sampleFile.name,
+            mimetype: sampleFile.mimetype,
+            size: sampleFile.size,
+            campana,
         });
 
-        await image.save();
-        res.status(201).json({ message: 'Imagen subida exitosamente', image });
+        const saveImage = await image.save();
+        const populatedImage = await Image.findById(saveImage._id).populate('campana');
+        res.status(201).json({ message: 'Imagen subida exitosamente', populatedImage });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error al subir la imagen' });

@@ -58,6 +58,29 @@ const schemaCampana = new mongoose.Schema({
         enum: ["Vivienda", "Salud", "Educación", "Infancia", "Rural"],
         default: "Vivienda"
     },
+    location: {
+        type: String,
+        required: true,
+        trim: true,
+        enum: [
+            "Región de Arica y Parinacota",
+            "Región de Tarapacá",
+            "Región de Antofagasta",
+            "Región de Atacama",
+            "Región de Coquimbo",
+            "Región de Valparaíso",
+            "Región Metropolitana",
+            "Región del Libertador General Bernardo O'Higgins",
+            "Región del Maule",
+            "Región de Ñuble",
+            "Región del Biobío",
+            "Región de La Araucanía",
+            "Región de Los Ríos",
+            "Región de Los Lagos",
+            "Región de Aysén del General Carlos Ibáñez del Campo",
+            "Región de Magallanes y de la Antártica Chilena"],
+        default: "Region Metropolitana"
+    },
     date: {
         type: Date,
         default: Date.now, 
