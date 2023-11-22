@@ -23,6 +23,12 @@ const schemaCampana = new mongoose.Schema({
         trim: true,
         default: 0
     },
+    filename: {
+        type: String,
+        required: true,
+        trim: true,
+        default: "upload619-poo-mgpanel2.jpg"
+    },
     account: {
         banco : {
             type: String,
@@ -93,7 +99,7 @@ const schemaCampana = new mongoose.Schema({
     image : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Image',
-        required: true
+        required: false
     }
 },
     {
