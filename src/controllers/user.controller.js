@@ -95,23 +95,38 @@ const profile = async (req, res) => {
 
 
 const updateProfile = async (req, res) => {
-    const {username, email, password} = req.body
-    const passwordHash = bcrypt.hashSync(password, 10);
-    const usuarioUpdate = {
-        username,
-        email,
-        passwordHash
-    }
-    const actualizarProfile = await User.findByIdAndUpdate(req.params.id, usuarioUpdate, {new: true});
-    if(!actualizarProfile) {
-        return res.status(404).json({message: "No se ha encontrado el perfil"})}
-    return res.json({
+    const { username, email, password } = req.body;
+
+    try {
+        // Verifica si se proporcionó una contraseña antes de intentar hashearla
+        const passwordHash = password ? bcrypt.hashSync(password, 10) : undefined;
+
+        const usuarioUpdate = {
+            username,
+            email,
+            // Actualiza el campo password solo si se proporcionó una nueva contraseña
+            ...(passwordHash && { password: passwordHash }),
+        };
+
+        const actualizarProfile = await User.findByIdAndUpdate(req.params.id, usuarioUpdate, { new: true });
+
+        if (!actualizarProfile) {
+            return res.status(404).json({ message: "No se ha encontrado el perfil" });
+        }
+
+        return res.json({
             id: actualizarProfile._id,
             username: actualizarProfile.username,
             email: actualizarProfile.email,
-            password: actualizarProfile.password,
+            // No devuelvas la contraseña hasheada en la respuesta
+            // password: actualizarProfile.password,
             createdAt: actualizarProfile.createdAt,
             updatedAt: actualizarProfile.updatedAt,
         });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
 };
+
 module.exports = { register, login, logout, profile, updateProfile };
