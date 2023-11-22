@@ -1,4 +1,5 @@
 const campana = require('../models/campanas.models');
+const Image = require('../models/images.models');
 const mongoose = require('mongoose')
 
 const getAllCampanas = async (req, res) => {
@@ -16,46 +17,60 @@ const getCampanas = async (req, res) => {
   };
   
 
-const createCampana = async (req, res) => {
-    const { title, description, date, meta, calculation, account, category, location } = req.body;
+  const createCampana = async (req, res) => {
+    const { title, description, date, meta, calculation, account, category, location, filename} = req.body;
     console.log(req.user);
 
-    try {const newCampana = new campana({
-        title,
-        description,
-        meta,
-        calculation,
-        account,
-        category,
-        location,
-        date,
-        user: req.user.id
-    });
+    try {
+        const { files } = req;
 
-    const savedCampana = await newCampana.save();
+        const newCampana = new campana({
+            title,
+            description,
+            meta,
+            calculation,
+            account,
+            category,
+            location,
+            date,
+            filename,
+            user: req.user.id,
+            
+            
+        });
 
-    if(savedCampana === null){
-        console.log("problema al crear la campaña");
-        return
-    }
-    const newImage = new Image({
-        description,
-        filename: image.name,
-        path: '/uploads/' + image.name,
-        originalname: image.name,
-        mimetype: image.mimetype,
-        size: image.size,
-        campana: savedCampana._id
-    });
+        const savedCampana = await newCampana.save();
 
-    const saveImage = await newImage.save();
+        if (savedCampana === null) {
+            console.log("Problema al crear la campaña");
+            return;
+        }
 
-    const populatedCampana = await campana.findById(savedCampana._id).populate('user').populate('image');
-    
+        if (!files || Object.keys(files).length === 0) {
+            console.log("No se ha enviado ningún archivo");
+            return;
+        }
 
-    res.json(populatedCampana);}
-    catch (error){
-        console.log(error)
+        const image = files.image; 
+
+        const newImage = new Image({
+            description,
+            filename: image.name,
+            path: '/uploads/' + image.name,
+            originalname: image.name,
+            mimetype: image.mimetype,
+            size: image.size,
+            campana: savedCampana._id
+        });
+
+        const savedImage = await newImage.save();
+
+        const populatedCampana = await campana.findById(savedCampana._id).populate('user').populate('image');
+
+        res.json(populatedCampana);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
