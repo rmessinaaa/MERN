@@ -34,7 +34,24 @@ const createCampana = async (req, res) => {
 
     const savedCampana = await newCampana.save();
 
-    const populatedCampana = await campana.findById(savedCampana._id).populate('user');
+    if(savedCampana === null){
+        console.log("problema al crear la campaña");
+        return
+    }
+    const newImage = new Image({
+        description,
+        filename: image.name,
+        path: '/uploads/' + image.name,
+        originalname: image.name,
+        mimetype: image.mimetype,
+        size: image.size,
+        campana: savedCampana._id
+    });
+
+    const saveImage = await newImage.save();
+
+    const populatedCampana = await campana.findById(savedCampana._id).populate('user').populate('image');
+    
 
     res.json(populatedCampana);}
     catch (error){

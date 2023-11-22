@@ -28,8 +28,8 @@ const schemaCampana = new mongoose.Schema({
             type: String,
             required: true,
             trim: true,
-            enum: ["Banco Estado", "SCOTIABANK", "BANCO DE CHILE/EDWARDS CITI"],
-            default: "Banco Estado"
+            enum: ["BANCO ESTADO", "SCOTIABANK", "BANCO DE CHILE/EDWARDS CITI"],
+            default: "BANCO ESTADO"
             },
         accountNum: {
             type: Number,
@@ -90,6 +90,11 @@ const schemaCampana = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    image : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Image',
+        required: true
+    }
 },
     {
         timestamps: true

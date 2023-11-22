@@ -18,17 +18,21 @@ app.use(express.static(path.join(__dirname, '/upload')));
 /*------------------------------------------------------*/
 
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(fileUpload());
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({limit: '100mb',extended: true}));
+app.use(fileUpload({
+    limits: { fileSize: 100 },
+}));
 app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }));
 /*-------------------------------------------------------*/
-app.use(express.urlencoded({extended: false}));
-app.use(bodyParser.json({ limit: '5mb' }));
-app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+
+// app.use(bodyParser.json({ limit: '100mb' }));
+// app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+
 
 
 
