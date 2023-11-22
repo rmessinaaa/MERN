@@ -7,7 +7,7 @@ const {validateSchema} = require('../middlewares/validator.middleware.js')
 
 const router = Router();
 
-router.get('/campanas' ,authRequired,  getCampanas);
+router.get('/campanas' , authRequired, getCampanas);
 router.get('/allcampanas', getAllCampanas);
 router.get("/campanas/:id",  authRequired, getCampana);
 router.post("/campanas", authRequired, validateSchema(createTaskSchema),  createCampana);
