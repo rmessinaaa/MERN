@@ -64,6 +64,6 @@ const deleteCampana = async (req, res) => {
         return res.status(404).json({message: "No se ha encontrado la campana"})}
     
     res.sendStatus(204);
-
 }
+
 module.exports = {getCampanas,getAllCampanas, getCampana, createCampana, updateCampana, deleteCampana}
