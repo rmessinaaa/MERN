@@ -28,7 +28,7 @@ const schemaCampana = new mongoose.Schema({
             type: String,
             required: true,
             trim: true,
-            enum: ["Banco Estado", ],
+            enum: ["Banco Estado", "SCOTIABANK", "BANCO DE CHILE/EDWARDS CITI"],
             default: "Banco Estado"
             },
         accountNum: {
@@ -79,7 +79,7 @@ const schemaCampana = new mongoose.Schema({
             "Región de Los Lagos",
             "Región de Aysén del General Carlos Ibáñez del Campo",
             "Región de Magallanes y de la Antártica Chilena"],
-        default: "Region Metropolitana"
+        default: "Región Metropolitana"
     },
     date: {
         type: Date,

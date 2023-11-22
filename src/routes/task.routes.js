@@ -10,7 +10,7 @@ const router = Router();
 router.get('/campanas' ,authRequired,  getCampanas);
 router.get('/allcampanas', getAllCampanas);
 router.get("/campanas/:id",  authRequired, getCampana);
-router.post("/campanas", ,authRequired, validateSchema(createTaskSchema),  createCampana);
+router.post("/campanas", authRequired, validateSchema(createTaskSchema),  createCampana);
 router.delete("/campanas/:id", authRequired,  deleteCampana);
 router.put("/campanas/:id",  authRequired, updateCampana);
 

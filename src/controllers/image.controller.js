@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Image = require('../models/images.models');
 const fileUpload = require('express-fileupload');
+const path = require('path')
+const fs = require('fs')
 
 const uploadImage = async (req, res) => {
     try {
@@ -10,27 +12,36 @@ const uploadImage = async (req, res) => {
         }
 
         console.log('req.files >>>', req.files);
-
-        const sampleFile = req.files;
-        console.log(sampleFile) 
+        const filePath = path.join(__dirname, '/upload');
+        const {image} = req.files
+        uploadPath = filePath + image.name;
+        
+     image.mv(uploadPath, function(err) {
+         if (err) {
+            //  res.status(500).send(err)
+            console.log(err);
+             return 
+         }
+    })
+        console.log(image) 
         const { description, campana} = req.body;
 
-        const image = new Image({
+        const newImage = new Image({
             description,
-            filename: sampleFile.name,
-            path: '/img/uploads/' + sampleFile.name,
-            originalname: sampleFile.name,
-            mimetype: sampleFile.mimetype,
-            size: sampleFile.size,
+            filename: image.name,
+            path: '/uploads/' + image.name,
+            originalname: image.name,
+            mimetype: image.mimetype,
+            size: image.size,
             campana,
         });
 
-        const saveImage = await image.save();
+        const saveImage = await newImage.save();
         const populatedImage = await Image.findById(saveImage._id).populate('campana');
         res.status(201).json({ message: 'Imagen subida exitosamente', populatedImage });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error al subir la imagen' });
+    //     res.status(500).json({ message: 'Error al subir la imagen' });
     }
 };
 

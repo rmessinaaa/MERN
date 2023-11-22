@@ -83,6 +83,7 @@ const profile = async (req, res) => {
             id: userFound._id,
             username: userFound.username,
             email: userFound.email,
+            password: userFound.password,
             createdAt: userFound.createdAt,
             updatedAt: userFound.updatedAt,
         });

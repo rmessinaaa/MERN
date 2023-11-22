@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -11,7 +12,7 @@ const fileRouter = require('../routes/images.routes');
 const exp = require('constants');
 const fileUpload = require('express-fileupload');
 const app = express();
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, '/upload')));
 
 
 /*------------------------------------------------------*/
@@ -26,6 +27,8 @@ app.use(cors({
 }));
 /*-------------------------------------------------------*/
 app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
 
 
